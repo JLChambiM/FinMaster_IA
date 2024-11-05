@@ -4,13 +4,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    # Configuración básica
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-key-very-secret'
-    
-    # Configuración de la base de datos
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'mysql://root:@localhost/finmaster'
+    SECRET_KEY = os.getenv('SECRET_KEY') or 'dev-key-very-secret'
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL') or 'mysql://root:@localhost/finmaster'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    
-    # Configuración de OpenAI
-    OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
+    GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+    GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
+    GOOGLE_OAUTH_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+    GOOGLE_OAUTH_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')

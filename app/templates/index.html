@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 text-center">
+            <h1>Bienvenido a Finmaster</h1>
+            <p class="lead">Tu asistente financiero personal impulsado por IA</p>
+            <div class="mt-4">
+                <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg">Comenzar ahora</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
