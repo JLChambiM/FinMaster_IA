@@ -1,0 +1,100 @@
+## Sprint 1 - Configuración inicial
+
+### Tareas:
+1. Crear estructura inicial de carpetas y archivos
+2. Configurar entorno virtual y dependencias
+3. Configurar Flask, SQLAlchemy y otras extensiones
+4. Crear archivo de configuración (`config.py`)
+5. Configurar conexión a la base de datos MySQL
+6. Configurar variables de entorno en `.env`
+7. Crear archivo `__init__.py` para inicializar la aplicación
+8. Crear archivo `run.py` para ejecutar la aplicación
+
+### Criterios de aceptación:
+- La estructura del proyecto está organizada y sigue las mejores prácticas
+- El entorno virtual y las dependencias están configurados correctamente
+- La aplicación Flask se puede ejecutar sin errores
+- La conexión a la base de datos MySQL funciona correctamente
+- Las variables de entorno se leen y se utilizan en la configuración
+
+
+
+## Sprint 2 - Sistema de Autenticación
+
+### Tareas:
+1. Crear el modelo de Usuario
+2. Implementar registro de usuario
+   - Crear ruta y plantilla de registro
+   - Procesar formulario de registro
+   - Guardar nuevos usuarios en la base de datos
+3. Implementar inicio de sesión
+   - Crear ruta y plantilla de inicio de sesión
+   - Validar credenciales de usuario
+   - Manejar sesión de usuario con Flask-Login
+4. Implementar cierre de sesión
+   - Crear ruta y lógica para cerrar sesión
+
+### Criterios de Aceptación:
+- El modelo de Usuario está implementado correctamente
+- Los flujos de registro, inicio de sesión y cierre de sesión funcionan sin errores
+- Las rutas protegidas solo pueden ser accedidas por usuarios autenticados
+
+
+
+### Sprint 3 - Encuesta y Perfil Financiero
+
+### Tareas:
+1. Implementar página de propósito de encuesta
+- Crear ruta y plantilla para la página de propósito
+- Diseñar interfaz informativa y atractiva
+- Agregar botón para comenzar la encuesta
+
+2. Crear modelo de datos para encuesta
+- Diseñar modelo para almacenar respuestas de encuesta
+- Implementar modelo para perfil financiero
+- Establecer relaciones entre Usuario, Encuesta y Perfil
+
+3. Implementar formulario de encuesta
+- Crear interfaz de encuesta paso a paso
+- Implementar validaciones de campos
+- Agregar función de guardar progreso
+- Permitir revisión antes de envío
+- Campos requeridos:
+  * Ingresos mensuales
+  * Gastos fijos
+  * Ahorros actuales
+  * Objetivos financieros
+  * Nivel de conocimiento financiero
+  * Tolerancia al riesgo
+
+4. Procesamiento de encuesta y creación de perfil
+- Implementar lógica de procesamiento de respuestas
+- Crear algoritmo de generación de perfil inicial
+- Integrar con OpenAI para recomendaciones personalizadas
+- Almacenar resultados en la base de datos
+
+5. Visualización de perfil financiero
+- Crear dashboard de perfil financiero
+- Mostrar resumen de información ingresada
+- Visualizar recomendaciones iniciales
+- Implementar gráficos relevantes
+
+Criterios de Aceptación Generales:
+1. La encuesta debe ser intuitiva y fácil de completar
+2. El usuario debe poder guardar y retomar la encuesta
+3. Todas las entradas deben ser validadas
+4. El perfil generado debe ser claro y comprensible
+5. La integración con IA debe proporcionar recomendaciones relevantes
+6. La interfaz debe ser responsive y accesible
+
+Consideraciones Técnicas:
+- Usar WTForms para la validación de formularios
+- Implementar almacenamiento en sesión para progreso
+- Crear migración de base de datos para nuevos modelos
+- Integrar biblioteca de gráficos para visualizaciones
+- Configurar conexión segura con API de OpenAI
+
+Riesgos y Dependencias:
+- Dependencia de la API de OpenAI para recomendaciones
+- Complejidad en la lógica de generación de perfiles
+- Manejo de sesiones para encuestas incompletas
