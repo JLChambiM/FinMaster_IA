@@ -14,6 +14,36 @@ blueprint = make_google_blueprint(
     storage=SQLAlchemyStorage(OAuth, db.session, user=current_user)
 )
 
+@oauth_authorized.connect_via(blueprint)
+def google_logged_in(blueprint, token):
+    if not token:
+        flash('No se pudo iniciar sesión con Google.', 'error')
+        return False
+    
+    resp = blueprint.session.get('/oauth2/v2/userinfo')
+    if not resp.ok:
+        flash('No se pudo obtener la información del usuario.', 'error')
+        return False
+
+    info = resp.json()
+    email = info['email']
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        user = User(
+            email=email,
+            is_active=True
+        )
+        db.session.add(user)
+        db.session.commit()
+        flash('Cuenta creada exitosamente con Google.', 'success')
+    
+    login_user(user)
+    flash('Inicio de sesión exitoso con Google', 'success')
+    
+    # En lugar de retornar False, redirigimos al dashboard
+    return redirect(url_for('main.dashboard'))
+
 @blueprint.route('/google')
 def google_login():
     if not google.authorized:
@@ -33,33 +63,8 @@ def google_login():
             flash('Cuenta creada exitosamente', 'success')
         
         login_user(user)
-        flash('Inicio de sesión exitoso', 'success')
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.dashboard'))
         
     except Exception as e:
         flash(f'Error durante el inicio de sesión: {str(e)}', 'error')
         return redirect(url_for('auth.login'))
-
-@oauth_authorized.connect_via(blueprint)
-def google_logged_in(blueprint, token):
-    if not token:
-        flash('No se pudo iniciar sesión con Google.', 'error')
-        return False
-    
-    resp = blueprint.session.get('/oauth2/v2/userinfo')
-    if not resp.ok:
-        flash('No se pudo obtener la información del usuario.', 'error')
-        return False
-
-    info = resp.json()
-    email = info['email']
-
-    user = User.query.filter_by(email=email).first()
-    if not user:
-        user = User(email=email, is_active=True)
-        db.session.add(user)
-        db.session.commit()
-
-    login_user(user)
-    flash('Inicio de sesión exitoso con Google', 'success')
-    return redirect(url_for('main.index'))
