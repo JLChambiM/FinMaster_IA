@@ -1,18 +1,235 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card">
-                <div class="card-header">
-                    <h2>Evaluación Financiera</h2>
+<div class="container mt-4">
+    <div class="col-lg-8 mx-auto">
+        <!-- Tarjeta Principal -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Evaluación Financiera Personalizada</h4>
+            </div>
+            <div class="card-body">
+                <form id="surveyForm" method="POST" class="needs-validation" novalidate>
+                    {{ form.csrf_token }}
+
+                    <!-- Paso 1: Finanzas Básicas -->
+                    <div id="step1" class="step-content">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-primary bg-opacity-10 p-2 rounded-circle me-3">
+                                <i class="bi bi-wallet2 text-primary"></i>
+                            </div>
+                            <h5 class="mb-0">Ingresos y Gastos Mensuales</h5>
+                        </div>
+
+                        <!-- Explicación Educativa -->
+                        <div class="alert alert-info border-0 bg-info bg-opacity-10 mb-4">
+                            <h6 class="alert-heading d-flex align-items-center">
+                                <i class="bi bi-info-circle me-2"></i>
+                                ¿Por qué es importante?
+                            </h6>
+                            <p class="mb-2">
+                                Conocer tus ingresos y gastos mensuales es fundamental para:
+                            </p>
+                            <ul class="mb-0">
+                                <li>Crear un presupuesto efectivo</li>
+                                <li>Identificar áreas de ahorro potencial</li>
+                                <li>Planificar mejor tu futuro financiero</li>
+                            </ul>
+                        </div>
+
+                        <!-- Campos Financieros -->
+                        <div class="mb-4">
+                            <label class="form-label d-flex justify-content-between">
+                                {{ form.monthly_income.label }}
+                                <i class="bi bi-question-circle text-primary" 
+                                   data-bs-toggle="tooltip" 
+                                   title="Incluye salario, inversiones y otros ingresos regulares">
+                                </i>
+                            </label>
+                            {{ form.monthly_income(class="form-control") }}
+                            <div class="form-text">
+                                <i class="bi bi-lightbulb text-warning me-1"></i>
+                                Tip: Para ingresos variables, calcula un promedio de los últimos 3 meses
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label d-flex justify-content-between">
+                                {{ form.monthly_expenses.label }}
+                                <i class="bi bi-question-circle text-primary" 
+                                   data-bs-toggle="tooltip" 
+                                   title="Suma todos tus gastos mensuales regulares">
+                                </i>
+                            </label>
+                            {{ form.monthly_expenses(class="form-control") }}
+                            <div class="form-text">
+                                <i class="bi bi-lightbulb text-warning me-1"></i>
+                                Tip: Incluye gastos fijos y variables promedio
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label d-flex justify-content-between">
+                                {{ form.current_savings.label }}
+                                <i class="bi bi-question-circle text-primary" 
+                                   data-bs-toggle="tooltip" 
+                                   title="Total de ahorros disponibles actualmente">
+                                </i>
+                            </label>
+                            {{ form.current_savings(class="form-control") }}
+                            <div class="form-text">
+                                <i class="bi bi-lightbulb text-warning me-1"></i>
+                                Tip: Considera todas tus cuentas de ahorro e inversión
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paso 2: Deudas -->
+                    <div id="step2" class="step-content" style="display: none;">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-warning bg-opacity-10 p-2 rounded-circle me-3">
+                                <i class="bi bi-credit-card text-warning"></i>
+                            </div>
+                            <h5 class="mb-0">Deudas y Préstamos</h5>
+                        </div>
+                    
+                        <div class="alert alert-info border-0 bg-info bg-opacity-10 mb-4">
+                            <h6 class="alert-heading d-flex align-items-center">
+                                <i class="bi bi-info-circle me-2"></i>
+                                Entendiendo tus Deudas
+                            </h6>
+                            <p class="mb-0">
+                                Conocer el estado de tus deudas te permite:
+                                <ul class="mb-0">
+                                    <li>Priorizar pagos de manera efectiva</li>
+                                    <li>Desarrollar una estrategia de pago sostenible</li>
+                                    <li>Mejorar tu salud financiera a largo plazo</li>
+                                </ul>
+                            </p>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-credit-card text-primary me-2"></i>
+                            <h5 class="mb-0">Deudas y Préstamos</h5>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check form-switch">
+                                {{ form.has_debts(class="form-check-input") }}
+                                {{ form.has_debts.label(class="form-check-label") }}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">{{ form.total_debt.label }}</label>
+                            {{ form.total_debt(class="form-control") }}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">{{ form.monthly_debt_payment.label }}</label>
+                            {{ form.monthly_debt_payment(class="form-control") }}
+                        </div>
+                    </div>
+
+                    <!-- Paso 3: Objetivos -->
+                    <div id="step3" class="step-content" style="display: none;">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-target text-primary me-2"></i>
+                            <h5 class="mb-0">Objetivos Financieros</h5>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">{{ form.primary_goal.label }}</label>
+                            {{ form.primary_goal(class="form-select") }}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">{{ form.goal_timeframe.label }}</label>
+                            {{ form.goal_timeframe(class="form-control") }}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">{{ form.goal_amount.label }}</label>
+                            {{ form.goal_amount(class="form-control") }}
+                        </div>
+                    </div>
+
+                    <!-- Paso 4: Perfil de Riesgo -->
+                    <div id="step4" class="step-content" style="display: none;">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-graph-up text-primary me-2"></i>
+                            <h5 class="mb-0">Perfil de Riesgo</h5>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">{{ form.risk_tolerance.label }}</label>
+                            {{ form.risk_tolerance(class="form-select") }}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">{{ form.investment_experience.label }}</label>
+                            {{ form.investment_experience(class="form-select") }}
+                        </div>
+                    </div>
+
+                    <!-- Paso 5: Hábitos -->
+                    <div id="step5" class="step-content" style="display: none;">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-check2-circle text-primary me-2"></i>
+                            <h5 class="mb-0">Hábitos Financieros</h5>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                {{ form.has_budget(class="form-check-input") }}
+                                {{ form.has_budget.label(class="form-check-label") }}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                {{ form.tracks_expenses(class="form-check-input") }}
+                                {{ form.tracks_expenses.label(class="form-check-label") }}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                {{ form.has_emergency_fund(class="form-check-input") }}
+                                {{ form.has_emergency_fund.label(class="form-check-label") }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navegación -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" id="prevBtn" class="btn btn-secondary" style="display: none;">
+                            <i class="bi bi-arrow-left me-2"></i>Anterior
+                        </button>
+                        <button type="button" id="nextBtn" class="btn btn-primary">
+                            Siguiente<i class="bi bi-arrow-right ms-2"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Barra de Progreso -->
+        <div class="card shadow-sm mt-4">
+            <div class="card-body">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 20%" 
+                         aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
-                <div class="card-body">
-                    <p class="lead">Formulario de evaluación en construcción...</p>
-                </div>
+                <small class="text-muted mt-2 d-block text-center">
+                    Paso 1 de 5
+                </small>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/survey_steps.js') }}"></script>
 {% endblock %}

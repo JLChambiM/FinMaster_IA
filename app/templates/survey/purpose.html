@@ -1,103 +1,134 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-5">
+<div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <!-- Encabezado -->
-            <div class="text-center mb-5">
-                <h1 class="display-4 mb-3">Evaluación Financiera Personalizada</h1>
-                <p class="lead text-muted">Comienza tu viaje hacia una mejor salud financiera</p>
-            </div>
-
-            <!-- Tarjetas de beneficios -->
-            <div class="row mb-5">
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body text-center">
-                            <div class="mb-3">
-                                <i class="bi bi-graph-up text-primary" style="font-size: 2rem;"></i>
-                            </div>
-                            <h5 class="card-title">Perfil Personalizado</h5>
-                            <p class="card-text">Obtén un análisis detallado de tu situación financiera actual.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body text-center">
-                            <div class="mb-3">
-                                <i class="bi bi-lightbulb text-primary" style="font-size: 2rem;"></i>
-                            </div>
-                            <h5 class="card-title">Recomendaciones IA</h5>
-                            <p class="card-text">Recibe consejos personalizados basados en inteligencia artificial.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body text-center">
-                            <div class="mb-3">
-                                <i class="bi bi-target text-primary" style="font-size: 2rem;"></i>
-                            </div>
-                            <h5 class="card-title">Objetivos Claros</h5>
-                            <p class="card-text">Establece y monitorea tus metas financieras de manera efectiva.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sección de información -->
-            <div class="card border-0 shadow-sm mb-5">
+            <!-- Tarjeta Principal -->
+            <div class="card shadow-sm border-0">
                 <div class="card-body p-4">
-                    <h4 class="mb-4">¿Qué obtendrás de esta evaluación?</h4>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <ul class="list-unstyled">
-                                <li class="mb-3">
-                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                    Análisis completo de tus finanzas
-                                </li>
-                                <li class="mb-3">
-                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                    Plan de acción personalizado
-                                </li>
-                                <li class="mb-3">
-                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                    Recomendaciones específicas
-                                </li>
-                            </ul>
+                    <!-- Encabezado -->
+                    <div class="text-center mb-5">
+                        <h2 class="display-6 fw-bold text-primary mb-3">Tu Viaje Hacia la Libertad Financiera</h2>
+                        <p class="lead text-muted">
+                            Esta evaluación personalizada es tu primer paso hacia una mejor salud financiera
+                        </p>
+                    </div>
+
+                    <!-- Características Principales -->
+                    <div class="row g-4 mb-5">
+                        <!-- Análisis Detallado -->
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body text-center p-4">
+                                    <div class="rounded-circle bg-primary bg-opacity-10 p-3 d-inline-flex mb-3">
+                                        <i class="bi bi-graph-up text-primary" style="font-size: 1.5rem;"></i>
+                                    </div>
+                                    <h5 class="card-title">Análisis Detallado</h5>
+                                    <p class="card-text text-muted small">
+                                        Obtén una visión clara y precisa de tu situación financiera actual
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <ul class="list-unstyled">
-                                <li class="mb-3">
-                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                    Estrategias de ahorro
-                                </li>
-                                <li class="mb-3">
-                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                    Consejos de inversión
-                                </li>
-                                <li class="mb-3">
-                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                    Recursos educativos personalizados
-                                </li>
-                            </ul>
+
+                        <!-- Consejos Personalizados -->
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body text-center p-4">
+                                    <div class="rounded-circle bg-success bg-opacity-10 p-3 d-inline-flex mb-3">
+                                        <i class="bi bi-lightbulb text-success" style="font-size: 1.5rem;"></i>
+                                    </div>
+                                    <h5 class="card-title">Consejos IA</h5>
+                                    <p class="card-text text-muted small">
+                                        Recibe recomendaciones personalizadas basadas en tu perfil único
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Plan de Acción -->
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body text-center p-4">
+                                    <div class="rounded-circle bg-warning bg-opacity-10 p-3 d-inline-flex mb-3">
+                                        <i class="bi bi-trophy text-warning" style="font-size: 1.5rem;"></i>
+                                    </div>
+                                    <h5 class="card-title">Plan de Acción</h5>
+                                    <p class="card-text text-muted small">
+                                        Obtén una estrategia clara para alcanzar tus metas financieras
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Tiempo estimado y botón de inicio -->
-            <div class="text-center mb-5">
-                <p class="text-muted mb-4">
-                    <i class="bi bi-clock me-2"></i>
-                    Tiempo estimado: 5-10 minutos
-                </p>
-                <a href="{{ url_for('survey_blueprint.start') }}" class="btn btn-primary btn-lg px-5">
-                    Comenzar Evaluación
-                    <i class="bi bi-arrow-right ms-2"></i>
-                </a>
+                    <!-- Proceso -->
+                    <div class="card border-0 bg-light mb-5">
+                        <div class="card-body p-4">
+                            <h4 class="card-title mb-4">¿Cómo funciona?</h4>
+                            
+                            <!-- Paso 1 -->
+                            <div class="d-flex align-items-start mb-4">
+                                <div class="bg-white rounded-circle p-2 shadow-sm me-3">
+                                    <i class="bi bi-1-circle-fill text-primary"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Evaluación Inicial</h6>
+                                    <p class="text-muted mb-0 small">
+                                        Responde preguntas simples sobre tus finanzas actuales.
+                                        Te guiaremos en cada paso del proceso.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- Paso 2 -->
+                            <div class="d-flex align-items-start mb-4">
+                                <div class="bg-white rounded-circle p-2 shadow-sm me-3">
+                                    <i class="bi bi-2-circle-fill text-primary"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Análisis IA</h6>
+                                    <p class="text-muted mb-0 small">
+                                        Nuestro sistema analiza tus respuestas y genera insights
+                                        personalizados para tu situación específica.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- Paso 3 -->
+                            <div class="d-flex align-items-start">
+                                <div class="bg-white rounded-circle p-2 shadow-sm me-3">
+                                    <i class="bi bi-3-circle-fill text-primary"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Plan Personalizado</h6>
+                                    <p class="text-muted mb-0 small">
+                                        Recibe un plan detallado con pasos concretos para
+                                        mejorar tu salud financiera.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tiempo Estimado -->
+                    <div class="text-center mb-4">
+                        <div class="d-inline-flex align-items-center bg-light rounded-pill px-4 py-2">
+                            <i class="bi bi-clock text-primary me-2"></i>
+                            <span class="small">Tiempo estimado: 5-10 minutos</span>
+                        </div>
+                    </div>
+
+                    <!-- Botón de Inicio -->
+                    <div class="text-center">
+                        <a href="{{ url_for('survey_blueprint.start') }}" 
+                           class="btn btn-primary btn-lg px-5 py-3 shadow-sm">
+                            Comenzar Evaluación
+                            <i class="bi bi-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
