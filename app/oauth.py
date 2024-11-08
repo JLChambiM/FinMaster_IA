@@ -11,60 +11,43 @@ blueprint = make_google_blueprint(
     client_id=os.getenv('GOOGLE_CLIENT_ID'),
     client_secret=os.getenv('GOOGLE_CLIENT_SECRET'),
     scope=["profile", "email"],
-    storage=SQLAlchemyStorage(OAuth, db.session, user=current_user)
+    storage=SQLAlchemyStorage(OAuth, db.session, user=current_user),
+    authorized_url="/login/google/authorized",  # Explícitamente definir la URL
+    redirect_url="/login/google/authorized"     # URL de redirección
 )
 
 @oauth_authorized.connect_via(blueprint)
 def google_logged_in(blueprint, token):
     if not token:
-        flash('No se pudo iniciar sesión con Google.', 'error')
-        return False
-    
-    resp = blueprint.session.get('/oauth2/v2/userinfo')
-    if not resp.ok:
-        flash('No se pudo obtener la información del usuario.', 'error')
+        print("No token received")  # Debug print
+        flash('Error al iniciar sesión con Google.', 'error')
         return False
 
-    info = resp.json()
-    email = info['email']
-
-    user = User.query.filter_by(email=email).first()
-    if not user:
-        user = User(
-            email=email,
-            is_active=True
-        )
-        db.session.add(user)
-        db.session.commit()
-        flash('Cuenta creada exitosamente con Google.', 'success')
-    
-    login_user(user)
-    flash('Inicio de sesión exitoso con Google', 'success')
-    
-    # En lugar de retornar False, redirigimos al dashboard
-    return redirect(url_for('main.dashboard'))
-
-@blueprint.route('/google')
-def google_login():
-    if not google.authorized:
-        return redirect(url_for('google.login'))
-    
     try:
-        resp = google.get('/oauth2/v2/userinfo')
-        assert resp.ok, resp.text
-        
-        email = resp.json()['email']
+        resp = blueprint.session.get('/oauth2/v2/userinfo')
+        if not resp.ok:
+            print(f"Failed to get user info: {resp.text}")  # Debug print
+            flash('Error al obtener información del usuario.', 'error')
+            return False
+
+        info = resp.json()
+        email = info.get('email')
+        if not email:
+            print("No email in response")  # Debug print
+            flash('No se pudo obtener el email.', 'error')
+            return False
+
         user = User.query.filter_by(email=email).first()
-        
         if not user:
             user = User(email=email, is_active=True)
             db.session.add(user)
             db.session.commit()
-            flash('Cuenta creada exitosamente', 'success')
-        
+
         login_user(user)
-        return redirect(url_for('main.dashboard'))
-        
+        flash('Inicio de sesión exitoso con Google', 'success')
+        return False  # Let Flask-Dance handle the redirect
+
     except Exception as e:
-        flash(f'Error durante el inicio de sesión: {str(e)}', 'error')
-        return redirect(url_for('auth.login'))
+        print(f"Error during login: {str(e)}")  # Debug print
+        flash(f'Error inesperado: {str(e)}', 'error')
+        return False

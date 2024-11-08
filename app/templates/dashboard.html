@@ -1,17 +1,137 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-5">
+<div class="container mt-4">
+    <!-- Encabezado de Bienvenida -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-primary text-white">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 class="mb-1">Bienvenido, {{ current_user.email.split('@')[0] }}</h2>
+                        <p class="mb-0">Tu asistente financiero personal</p>
+                    </div>
+                    <i class="bi bi-person-circle" style="font-size: 2.5rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjetas de Estado -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
+                            <i class="bi bi-clipboard-check text-primary" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <h5 class="card-title mb-0">Estado Actual</h5>
+                    </div>
+                    <p class="card-text text-muted">
+                        Completa tu evaluación inicial para empezar tu viaje financiero
+                    </p>
+                    <a href="{{ url_for('survey_blueprint.purpose') }}" class="btn btn-outline-primary w-100">
+                        Iniciar Evaluación
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-warning bg-opacity-10 p-3 rounded-circle me-3">
+                            <i class="bi bi-graph-up text-warning" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <h5 class="card-title mb-0">Objetivos</h5>
+                    </div>
+                    <p class="card-text text-muted">
+                        Define tus metas financieras y monitorea tu progreso
+                    </p>
+                    <button class="btn btn-outline-warning w-100" disabled>
+                        Próximamente
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-success bg-opacity-10 p-3 rounded-circle me-3">
+                            <i class="bi bi-book text-success" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <h5 class="card-title mb-0">Recursos</h5>
+                    </div>
+                    <p class="card-text text-muted">
+                        Explora contenido educativo personalizado
+                    </p>
+                    <button class="btn btn-outline-success w-100" disabled>
+                        Próximamente
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de Progreso -->
     <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h2>Bienvenido a tu Dashboard</h2>
+        <div class="col-md-8 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">Próximos Pasos</h5>
                 </div>
                 <div class="card-body">
-                    <p class="lead">
-                        Hola {{ current_user.email }}, has iniciado sesión correctamente.
-                    </p>
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item d-flex align-items-center">
+                            <span class="badge bg-primary rounded-pill me-3">1</span>
+                            <div>
+                                <h6 class="mb-0">Completar Evaluación Inicial</h6>
+                                <small class="text-muted">Conoce tu perfil financiero actual</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item d-flex align-items-center">
+                            <span class="badge bg-secondary rounded-pill me-3">2</span>
+                            <div>
+                                <h6 class="mb-0">Establecer Objetivos</h6>
+                                <small class="text-muted">Define tus metas financieras</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item d-flex align-items-center">
+                            <span class="badge bg-secondary rounded-pill me-3">3</span>
+                            <div>
+                                <h6 class="mb-0">Revisar Recomendaciones</h6>
+                                <small class="text-muted">Obtén consejos personalizados de la IA</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">Ayuda Rápida</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-light text-start" disabled>
+                            <i class="bi bi-question-circle me-2"></i>
+                            Centro de Ayuda
+                        </button>
+                        <button class="btn btn-light text-start" disabled>
+                            <i class="bi bi-chat-dots me-2"></i>
+                            Chat con IA
+                        </button>
+                        <button class="btn btn-light text-start" disabled>
+                            <i class="bi bi-envelope me-2"></i>
+                            Contacto
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
