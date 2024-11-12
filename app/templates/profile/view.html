@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Resumen Financiero -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Tu Perfil Financiero</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Puntuaciones -->
+                    <div class="row mb-4">
+                        <div class="col-md-4 text-center">
+                            <div class="h2 mb-0">
+                                {% if profile.financial_health_score is not none %}
+                                    {{ profile.financial_health_score }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                                <span class="small">/100</span>
+                            </div>
+                            <div class="text-muted small">Salud Financiera</div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="h2 mb-0">
+                                {% if profile.savings_ratio is not none %}
+                                    {{ "%.1f"|format(profile.savings_ratio) }}
+                                {% else %}
+                                    0.0
+                                {% endif %}
+                                <span class="small">%</span>
+                            </div>
+                            <div class="text-muted small">Ratio de Ahorro</div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="h2 mb-0">
+                                {% if profile.emergency_fund_months is not none %}
+                                    {{ "%.1f"|format(profile.emergency_fund_months) }}
+                                {% else %}
+                                    0.0
+                                {% endif %}
+                                <span class="small">meses</span>
+                            </div>
+                            <div class="text-muted small">Fondo de Emergencia</div>
+                        </div>
+                    </div>
+
+                    <!-- Tipo de Inversor -->
+                    <div class="alert alert-info">
+                        <h5 class="alert-heading">Perfil de Inversor</h5>
+                        <p class="mb-0">
+                            Tu perfil es 
+                            <strong>
+                                {% if profile.investor_type %}
+                                    {{ profile.investor_type }}
+                                {% else %}
+                                    No definido
+                                {% endif %}
+                            </strong> 
+                            con una tolerancia al riesgo 
+                            <strong>
+                                {% if profile.risk_profile %}
+                                    {{ profile.risk_profile }}
+                                {% else %}
+                                    No definida
+                                {% endif %}
+                            </strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recomendaciones -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Recomendaciones Personalizadas</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                    {% if profile.get_recommendations() %}
+                        {% for rec in profile.get_recommendations() %}
+                            <div class="list-group-item">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                {{ rec }}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center text-muted py-3">
+                            No hay recomendaciones disponibles en este momento.
+                        </div>
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Objetivos Sugeridos -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Objetivos Sugeridos</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                    {% if profile.get_suggested_goals() %}
+                        {% for goal in profile.get_suggested_goals() %}
+                            <div class="list-group-item">
+                                <i class="bi bi-trophy-fill text-warning me-2"></i>
+                                {{ goal }}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center text-muted py-3">
+                            No hay objetivos sugeridos disponibles en este momento.
+                        </div>
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Acciones Inmediatas -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm sticky-top" style="top: 1rem;">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Próximos Pasos</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                    {% if profile.get_action_items() %}
+                        {% for action in profile.get_action_items() %}
+                            <div class="list-group-item">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-success bg-opacity-10 p-2 me-3">
+                                        <i class="bi bi-arrow-right text-success"></i>
+                                    </div>
+                                    <div>{{ action }}</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center text-muted py-3">
+                            No hay acciones sugeridas disponibles en este momento.
+                        </div>
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

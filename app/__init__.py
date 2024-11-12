@@ -23,14 +23,18 @@ def create_app():
 
     login_manager.login_view = 'auth_blueprint.login'
     
+    # Importar modelos
     from app import models
-    from app.routes import main, auth, survey
+    
+    # Importar blueprints
+    from app.routes import main, auth, survey, profile
     from app.oauth import blueprint as google_blueprint
     
     # Registrar blueprints
     app.register_blueprint(main.bp)
     app.register_blueprint(auth.bp)
     app.register_blueprint(survey.bp)
+    app.register_blueprint(profile.bp)
     app.register_blueprint(google_blueprint, name='google_blueprint')
-    
+
     return app

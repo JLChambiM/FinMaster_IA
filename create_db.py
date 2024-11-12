@@ -6,7 +6,7 @@ app = create_app()
 with app.app_context():
     try:
         db.create_all()
-        print("Tablas creadas exitosamente!")
+        print("¡Tablas creadas exitosamente!")
         
         # Verificar las tablas creadas
         print("\nTablas en la base de datos:")
