@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
 from app.models import FinancialProfile
 
@@ -13,6 +13,11 @@ def view_profile():
         .first()
     
     if not profile:
-        return render_template('profile/no_profile.html')
+        return redirect(url_for('profile_blueprint.no_profile'))
     
     return render_template('profile/view.html', profile=profile)
+
+@bp.route('/no-profile')
+@login_required
+def no_profile():
+    return render_template('profile/no_profile.html')

@@ -74,10 +74,7 @@
 - Almacenar resultados en la base de datos
 
 5. Visualización de perfil financiero
-- Crear dashboard de perfil financiero
-- Mostrar resumen de información ingresada
-- Visualizar recomendaciones iniciales
-- Implementar gráficos relevantes
+- Aceder al perfil generado despues de la encuesta desde el dashboard
 
 Criterios de Aceptación Generales:
 1. La encuesta debe ser intuitiva y fácil de completar

@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <div class="container mt-4">
-    <!-- Encabezado de Bienvenida -->
+    <!-- Encabezado de bienvenida -->
     <div class="row mb-4">
         <div class="col-12">
             <div class="card bg-primary text-white">
@@ -11,29 +10,96 @@
                         <h2 class="mb-1">Bienvenido, {{ current_user.email.split('@')[0] }}</h2>
                         <p class="mb-0">Tu asistente financiero personal</p>
                     </div>
-                    <i class="bi bi-person-circle" style="font-size: 2.5rem;"></i>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Tarjetas de Estado -->
+    {% if profile %}
+    <!-- Resumen del Perfil Financiero -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">Tu Perfil Financiero</h5>
+                        <a href="{{ url_for('profile_blueprint.view_profile') }}" class="btn btn-outline-primary btn-sm">
+                            Ver perfil completo
+                        </a>
+                    </div>
+                    
+                    <!-- Métricas Principales -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-3">
+                            <div class="card h-100 border-0 bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="text-muted mb-2">Salud Financiera</h6>
+                                    <h3 class="mb-0">{{ profile.financial_health_score }}<small class="text-muted">/100</small></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card h-100 border-0 bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="text-muted mb-2">Ahorro Mensual</h6>
+                                    <h3 class="mb-0">{{ "%.1f"|format(profile.savings_ratio) }}<small class="text-muted">%</small></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card h-100 border-0 bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="text-muted mb-2">Fondo Emergencia</h6>
+                                    <h3 class="mb-0">{{ "%.1f"|format(profile.emergency_fund_months) }}<small class="text-muted">meses</small></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card h-100 border-0 bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="text-muted mb-2">Perfil Inversor</h6>
+                                    <h3 class="mb-0 text-capitalize">{{ profile.risk_profile }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Próxima Acción -->
+                    {% if profile.get_action_items() %}
+                    <div class="alert alert-info mb-0">
+                        <h6 class="alert-heading">Próxima acción recomendada:</h6>
+                        <p class="mb-0">{{ profile.get_action_items()[0] }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Tarjetas de Estado/Acciones -->
     <div class="row mb-4">
         <div class="col-md-4 mb-3">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
                         <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
-                            <i class="bi bi-clipboard-check text-primary" style="font-size: 1.5rem;"></i>
+                            <i class="bi bi-clipboard-data"></i>
                         </div>
                         <h5 class="card-title mb-0">Estado Actual</h5>
                     </div>
-                    <p class="card-text text-muted">
-                        Completa tu evaluación inicial para empezar tu viaje financiero
-                    </p>
+                    
+                    {% if not profile %}
+                    <p>Completa tu evaluación inicial para empezar tu viaje financiero</p>
                     <a href="{{ url_for('survey_blueprint.purpose') }}" class="btn btn-outline-primary w-100">
                         Iniciar Evaluación
                     </a>
+                    {% else %}
+                    <p>Ya has completado tu evaluación inicial</p>
+                    <a href="{{ url_for('profile_blueprint.view_profile') }}" class="btn btn-outline-primary w-100">
+                        Ver Mi Perfil
+                    </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -43,16 +109,16 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
                         <div class="bg-warning bg-opacity-10 p-3 rounded-circle me-3">
-                            <i class="bi bi-graph-up text-warning" style="font-size: 1.5rem;"></i>
+                            <i class="bi bi-trophy"></i>
                         </div>
                         <h5 class="card-title mb-0">Objetivos</h5>
                     </div>
-                    <p class="card-text text-muted">
-                        Define tus metas financieras y monitorea tu progreso
-                    </p>
-                    <button class="btn btn-outline-warning w-100" disabled>
-                        Próximamente
-                    </button>
+                    {% if profile and profile.get_suggested_goals() %}
+                    <p>Tienes {{ profile.get_suggested_goals()|length }} objetivos sugeridos</p>
+                    {% else %}
+                    <p>Define tus metas financieras y monitorea tu progreso</p>
+                    {% endif %}
+                    <span class="badge bg-secondary">Próximamente</span>
                 </div>
             </div>
         </div>
@@ -62,76 +128,12 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
                         <div class="bg-success bg-opacity-10 p-3 rounded-circle me-3">
-                            <i class="bi bi-book text-success" style="font-size: 1.5rem;"></i>
+                            <i class="bi bi-book"></i>
                         </div>
                         <h5 class="card-title mb-0">Recursos</h5>
                     </div>
-                    <p class="card-text text-muted">
-                        Explora contenido educativo personalizado
-                    </p>
-                    <button class="btn btn-outline-success w-100" disabled>
-                        Próximamente
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sección de Progreso -->
-    <div class="row">
-        <div class="col-md-8 mb-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-0">
-                    <h5 class="mb-0">Próximos Pasos</h5>
-                </div>
-                <div class="card-body">
-                    <div class="list-group list-group-flush">
-                        <div class="list-group-item d-flex align-items-center">
-                            <span class="badge bg-primary rounded-pill me-3">1</span>
-                            <div>
-                                <h6 class="mb-0">Completar Evaluación Inicial</h6>
-                                <small class="text-muted">Conoce tu perfil financiero actual</small>
-                            </div>
-                        </div>
-                        <div class="list-group-item d-flex align-items-center">
-                            <span class="badge bg-secondary rounded-pill me-3">2</span>
-                            <div>
-                                <h6 class="mb-0">Establecer Objetivos</h6>
-                                <small class="text-muted">Define tus metas financieras</small>
-                            </div>
-                        </div>
-                        <div class="list-group-item d-flex align-items-center">
-                            <span class="badge bg-secondary rounded-pill me-3">3</span>
-                            <div>
-                                <h6 class="mb-0">Revisar Recomendaciones</h6>
-                                <small class="text-muted">Obtén consejos personalizados de la IA</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 mb-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-0">
-                    <h5 class="mb-0">Ayuda Rápida</h5>
-                </div>
-                <div class="card-body">
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-light text-start" disabled>
-                            <i class="bi bi-question-circle me-2"></i>
-                            Centro de Ayuda
-                        </button>
-                        <button class="btn btn-light text-start" disabled>
-                            <i class="bi bi-chat-dots me-2"></i>
-                            Chat con IA
-                        </button>
-                        <button class="btn btn-light text-start" disabled>
-                            <i class="bi bi-envelope me-2"></i>
-                            Contacto
-                        </button>
-                    </div>
+                    <p>Explora contenido educativo personalizado</p>
+                    <span class="badge bg-secondary">Próximamente</span>
                 </div>
             </div>
         </div>
