@@ -12,9 +12,12 @@ class User(UserMixin, db.Model):
     last_login = db.Column(db.DateTime)
     is_active = db.Column(db.Boolean, default=True)
 
-    # Relaciones sin backrefs
-    surveys = db.relationship('Survey', backref='user_survey', lazy=True)
-    current_profile = db.relationship('FinancialProfile', backref='user_profile', lazy=True)
+    # Relaciones actualizadas
+    surveys = db.relationship('Survey', back_populates='user', lazy=True)
+    financial_profiles = db.relationship('FinancialProfile', 
+                                      back_populates='user',
+                                      lazy=True,
+                                      order_by='desc(FinancialProfile.created_at)')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -27,8 +30,8 @@ class User(UserMixin, db.Model):
         return Survey.query.filter_by(user_id=self.id).order_by(Survey.created_at.desc()).first()
 
     def get_profile(self):
-        from .financial_profile import FinancialProfile
-        return FinancialProfile.query.filter_by(user_id=self.id).order_by(FinancialProfile.created_at.desc()).first()
+        """Obtiene el perfil más reciente"""
+        return self.financial_profiles[0] if self.financial_profiles else None
 
 class OAuth(OAuthConsumerMixin, db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))

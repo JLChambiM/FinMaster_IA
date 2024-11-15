@@ -32,5 +32,9 @@ class Survey(db.Model):
     tracks_expenses = db.Column(db.Boolean, default=False)
     has_emergency_fund = db.Column(db.Boolean, default=False)
 
+    # Relaciones actualizadas
+    user = db.relationship('User', back_populates='surveys')
+    financial_profile = db.relationship('FinancialProfile', back_populates='survey', uselist=False)
+
     def __repr__(self):
         return f'<Survey {self.id} de {self.user_id}>'

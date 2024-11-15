@@ -11,3 +11,5 @@ class Config:
     GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
     GOOGLE_OAUTH_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
     GOOGLE_OAUTH_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
+    # Agregar la API key de Gemini
+    GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')

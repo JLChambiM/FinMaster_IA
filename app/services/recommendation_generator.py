@@ -1,33 +1,59 @@
-from openai import OpenAI
+import google.generativeai as genai
 from app.models import Survey, FinancialProfile
 import os
 
+def load_env_manually():
+    env_vars = {}
+    try:
+        with open('.env', 'r') as file:
+            for line in file:
+                line = line.strip()
+                if line and not line.startswith('#'):
+                    key, value = line.split('=', 1)
+                    env_vars[key.strip()] = value.strip()
+    except Exception as e:
+        print(f"Error leyendo .env: {e}")
+    return env_vars
+
 class RecommendationGenerator:
     def __init__(self):
-        self.client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+        try:
+            # Cargar API key manualmente
+            env_vars = load_env_manually()
+            api_key = env_vars.get('GOOGLE_API_KEY')
+            
+            if not api_key:
+                raise ValueError("API key no encontrada")
+                
+            genai.configure(api_key=api_key)
+            self.model = genai.GenerativeModel('gemini-pro')
+        except Exception as e:
+            print(f"Error al inicializar Gemini: {str(e)}")
+            raise
 
     def generate_recommendations(self, survey: Survey, profile: FinancialProfile) -> dict:
         """Genera recomendaciones personalizadas basadas en el perfil financiero"""
-        
         try:
-            # Crear el prompt para OpenAI
+            # Crear el prompt para Gemini
             prompt = self._create_prompt(survey, profile)
             
-            # Llamar a la API de OpenAI
-            response = self.client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {"role": "system", "content": """Eres un asesor financiero experto que proporciona 
+            # Llamar a la API de Gemini
+            response = self.model.generate_content([
+                {
+                    "role": "user",
+                    "parts": [{"text": """Eres un asesor financiero experto que proporciona 
                      recomendaciones claras, accionables y personalizadas basadas en el perfil financiero 
                      de las personas. Tus consejos deben ser específicos, prácticos y adaptados a la 
-                     situación particular de cada persona."""},
-                    {"role": "user", "content": prompt}
-                ],
-                temperature=0.7
-            )
+                     situación particular de cada persona."""}]
+                },
+                {
+                    "role": "user",
+                    "parts": [{"text": prompt}]
+                }
+            ])
             
             # Procesar la respuesta
-            recommendations = self._process_response(response.choices[0].message.content)
+            recommendations = self._process_response(response.text)
             return recommendations
             
         except Exception as e:
@@ -100,7 +126,7 @@ class RecommendationGenerator:
         """
 
     def _process_response(self, response_text: str) -> dict:
-        """Procesa la respuesta de OpenAI y la estructura en un diccionario"""
+        """Procesa la respuesta de Gemini y la estructura en un diccionario"""
         sections = response_text.split('\n\n')
         result = {
             'summary': '',

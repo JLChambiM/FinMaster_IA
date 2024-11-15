@@ -28,9 +28,9 @@ class FinancialProfile(db.Model):
     suggested_goals = db.Column(db.Text)
     action_items = db.Column(db.Text)
     
-    # Relaciones
-    user = db.relationship('User', backref=db.backref('financial_profiles', lazy=True))
-    survey = db.relationship('Survey', backref=db.backref('financial_profile', uselist=False))
+    # Relaciones actualizadas
+    user = db.relationship('User', back_populates='financial_profiles')
+    survey = db.relationship('Survey', back_populates='financial_profile')
 
     def __init__(self, **kwargs):
         super(FinancialProfile, self).__init__(**kwargs)

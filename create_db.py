@@ -5,6 +5,11 @@ app = create_app()
 
 with app.app_context():
     try:
+        # Eliminar todas las tablas existentes
+        db.drop_all()
+        print("¡Tablas eliminadas exitosamente!")
+        
+        # Crear las tablas nuevamente
         db.create_all()
         print("¡Tablas creadas exitosamente!")
         
