@@ -104,6 +104,7 @@
             </div>
         </div>
 
+        <!-- Card de Objetivos actualizada -->
         <div class="col-md-4 mb-3">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
@@ -113,12 +114,57 @@
                         </div>
                         <h5 class="card-title mb-0">Objetivos</h5>
                     </div>
-                    {% if profile and profile.get_suggested_goals() %}
-                    <p>Tienes {{ profile.get_suggested_goals()|length }} objetivos sugeridos</p>
+
+                    {% if profile and profile.goals %}
+                        <div class="objectives-list">
+                            {% set active_goals = profile.goals|selectattr('status', 'in', ['pending', 'in_progress'])|list %}
+                            {% if active_goals %}
+                                {% for goal in active_goals[:2] %}
+                                    <div class="objective-item mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <small class="text-muted">{{ goal.title }}</small>
+                                            <span class="badge bg-{{ {
+                                                'pending': 'secondary',
+                                                'in_progress': 'primary'
+                                            }[goal.status] }} badge-sm">{{ goal.status|title|replace('_', ' ') }}</span>
+                                        </div>
+                                        <div class="progress" style="height: 6px;">
+                                            <div class="progress-bar bg-warning" 
+                                                 role="progressbar" 
+                                                 style="width: {{ goal.calculate_progress() }}%"
+                                                 aria-valuenow="{{ goal.calculate_progress() }}"
+                                                 aria-valuemin="0"
+                                                 aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-1">
+                                            <small class="text-muted">{{ goal.calculate_progress()|percentage }}</small>
+                                            <small class="text-muted">{{ goal.target_amount|currency }}</small>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                                {% if active_goals|length > 2 %}
+                                    <small class="text-muted">
+                                        Y {{ active_goals|length - 2 }} objetivos más...
+                                    </small>
+                                {% endif %}
+                            {% else %}
+                                <p class="text-muted mb-0">No hay objetivos activos actualmente.</p>
+                            {% endif %}
+
+                            <a href="{{ url_for('goals_blueprint.view_goals') }}" class="btn btn-outline-warning w-100">
+                                Ver todos los objetivos
+                            </a>
+                        </div>
                     {% else %}
-                    <p>Define tus metas financieras y monitorea tu progreso</p>
+                        <p class="text-muted mb-3">Define tus metas financieras y monitorea tu progreso</p>
+                        {% if not profile %}
+                            <a href="{{ url_for('survey_blueprint.purpose') }}" class="btn btn-outline-warning w-100">
+                                Iniciar Evaluación
+                            </a>
+                        {% endif %}
                     {% endif %}
-                    <span class="badge bg-secondary">Próximamente</span>
                 </div>
             </div>
         </div>

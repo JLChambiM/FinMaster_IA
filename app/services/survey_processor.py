@@ -1,20 +1,22 @@
 from app.models import Survey, FinancialProfile
 from app.services.recommendation_generator import RecommendationGenerator
 from datetime import datetime
+from app.services.goal_generator import GoalGenerator
 
 class SurveyProcessor:
     def __init__(self, survey: Survey):
         self.survey = survey
         self.recommendation_generator = RecommendationGenerator()
+        self.goal_generator = GoalGenerator()  # Agregar esta línea
 
     def process_survey(self) -> FinancialProfile:
-        """Procesa la encuesta y genera un perfil financiero con recomendaciones"""
+        """Procesa la encuesta y genera un perfil financiero con recomendaciones y objetivos"""
         
         # Primero creamos el perfil básico
         profile = self._create_financial_profile()
         
         try:
-            # Generar recomendaciones usando OpenAI
+            # Generar recomendaciones
             recommendations = self.recommendation_generator.generate_recommendations(
                 self.survey, profile
             )
@@ -24,11 +26,15 @@ class SurveyProcessor:
             profile.set_suggested_goals(recommendations.get('suggested_goals', []))
             profile.set_action_items(recommendations.get('action_items', []))
             
-        except Exception as e:
-            print(f"Error al generar recomendaciones: {str(e)}")
-            # Si hay un error, continuamos sin recomendaciones
+            # Generar objetivos financieros
+            goals = self.goal_generator.generate_goals(self.survey, profile)
             
-        return profile
+            # Los objetivos se guardarán en la base de datos después de guardar el perfil
+            
+        except Exception as e:
+            print(f"Error al generar recomendaciones o objetivos: {str(e)}")
+            
+        return profile, goals  # Retornamos también los objetivos
 
     def _create_financial_profile(self) -> FinancialProfile:
         """Crea un perfil financiero basado en la encuesta"""

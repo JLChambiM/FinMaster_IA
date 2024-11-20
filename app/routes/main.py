@@ -11,7 +11,6 @@ def index():
 @bp.route('/dashboard')
 @login_required
 def dashboard():
-    # Obtener el perfil más reciente del usuario
     profile = FinancialProfile.query.filter_by(user_id=current_user.id)\
         .order_by(FinancialProfile.created_at.desc())\
         .first()

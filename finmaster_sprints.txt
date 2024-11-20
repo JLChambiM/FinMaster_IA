@@ -97,77 +97,45 @@ Riesgos y Dependencias:
 - Manejo de sesiones para encuestas incompletas
 
 
-## Sprint 4 - Recomendaciones Financieras y Monitoreo
+## Sprint 4 - Sistema de Objetivos y Asistencia
 
-### Tareas:
-1. Implementar Sistema de Recomendaciones con IA
-- Integrar API de OpenAI para generar recomendaciones
-- Crear prompts efectivos para análisis financiero
-- Implementar lógica de procesamiento de respuestas
-- Guardar y categorizar recomendaciones
-- Criterios:
-  * Recomendaciones basadas en perfil
-  * Consejos personalizados
-  * Sugerencias de mejora
-  * Alertas de riesgo
+1. Sistema de Recomendaciones 
 
-2. Visualización de Progreso
-- Crear dashboard de seguimiento
-- Implementar gráficos de progreso
-- Mostrar comparativas temporales
-- Visualizar:
-  * Progreso de ahorro
-  * Reducción de gastos
-  * Cumplimiento de objetivos
-  * Métricas financieras clave
+Ya implementado en Sprint 3 con Gemini AI
+Recomendaciones personalizadas basadas en el perfil
+Enfoque especial en manejo de deudas
 
-3. Sistema de Objetivos
-- Crear interfaz para establecer objetivos
-- Implementar seguimiento de metas
-- Agregar notificaciones de progreso
-- Permitir ajustes de objetivos
-- Funcionalidades:
-  * Objetivos de ahorro
-  * Metas financieras
-  * Plazos temporales
-  * Hitos de progreso
+2. Sistema de Objetivos Sugeridos 
 
-4. Recursos Educativos
-- Implementar sección de aprendizaje
-- Generar contenido con IA
-- Crear sistema de seguimiento de progreso
-- Contenido:
-  * Artículos financieros
-  * Guías paso a paso
-  * Videos explicativos
-  * Ejercicios prácticos
+Generación automática de objetivos basados en perfil
+Objetivos enfocados en:
 
-5. Chatbot de Asistencia
-- Implementar chat en tiempo real
-- Integrar IA para respuestas
-- Crear base de conocimientos
-- Funciones:
-  * Respuestas automáticas
-  * Ayuda contextual
-  * Sugerencias personalizadas
-  * FAQ dinámico
+Reducción de deudas
+Mejora de hábitos financieros
+Metas de ahorro realistas
 
-Criterios de Aceptación Generales:
-1. Las recomendaciones deben ser relevantes y personalizadas
-2. Los gráficos deben ser claros y comprensibles
-3. El sistema debe ser interactivo y responsivo
-4. El contenido educativo debe ser accesible
-5. El chatbot debe proporcionar respuestas útiles
+Criterios de aceptación:
 
-Consideraciones Técnicas:
-- Optimización de llamadas a la API de OpenAI
-- Implementación de caché para contenido frecuente
-- Sistema de cola para procesamiento asíncrono
-- Almacenamiento eficiente de históricos
-- Seguridad en comunicaciones del chat
+Objetivos visibles post-encuesta
+Sugerencias basadas en perfil
+Metas alcanzables y medibles
 
-### Riesgos y Dependencias:
-- Costo de uso de API de OpenAI
-- Complejidad en procesamiento de lenguaje natural
-- Mantenimiento de base de conocimientos
-- Escalabilidad del sistema de chat
+3. Seguimiento de Objetivos 
+
+Interfaz simple para ver progreso
+Implementación básica de seguimiento
+Funcionalidades:
+
+Estado actual vs objetivo
+Progreso en reducción de deudas
+Visualización simple del avance
+
+4. Chatbot Básico de Ayuda 
+
+Interfaz flotante simple
+Enfoque en preguntas sobre deudas
+Funciones:
+
+Respuestas predefinidas para dudas comunes
+Ayuda con conceptos básicos
+Integración con Gemini AI para consultas específicas

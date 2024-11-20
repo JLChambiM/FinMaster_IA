@@ -29,6 +29,7 @@ def create_app():
     # Importar blueprints
     from app.routes import main, auth, survey, profile
     from app.oauth import blueprint as google_blueprint
+    from app.routes import main, auth, survey, profile, goals 
     
     # Registrar blueprints
     app.register_blueprint(main.bp)
@@ -36,5 +37,31 @@ def create_app():
     app.register_blueprint(survey.bp)
     app.register_blueprint(profile.bp)
     app.register_blueprint(google_blueprint, name='google_blueprint')
+    app.register_blueprint(goals.bp)
+
+    # Filtros personalizados para templates
+    @app.template_filter('number_format')
+    def number_format_filter(value):
+        """Formatear números con separadores de miles"""
+        try:
+            return "{:,.0f}".format(float(value))
+        except (ValueError, TypeError):
+            return value
+            
+    @app.template_filter('percentage')
+    def percentage_filter(value):
+        """Formatear porcentajes"""
+        try:
+            return "{:.1f}%".format(float(value))
+        except (ValueError, TypeError):
+            return value
+            
+    @app.template_filter('currency')
+    def currency_filter(value):
+        """Formatear montos como moneda"""
+        try:
+            return "${:,.2f}".format(float(value))
+        except (ValueError, TypeError):
+            return value
 
     return app

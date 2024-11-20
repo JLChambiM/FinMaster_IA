@@ -1,5 +1,6 @@
 from .user import User, OAuth
 from .survey import Survey
 from .financial_profile import FinancialProfile
+from .financial_goal import FinancialGoal
 
-# Aquí se importarán más modelos en el futuro
+__all__ = ['User', 'OAuth', 'Survey', 'FinancialProfile', 'FinancialGoal']

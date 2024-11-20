@@ -47,13 +47,23 @@ def start():
             db.session.add(survey)
             db.session.commit()
 
-            # Procesar encuesta y crear perfil
+            # Procesar encuesta y crear perfil y objetivos
             processor = SurveyProcessor(survey)
-            profile = processor.process_survey()
+            profile, goals = processor.process_survey()  # Ahora recibimos los objetivos
             
             # Guardar perfil
             db.session.add(profile)
             db.session.commit()
+
+            # Guardar los objetivos generados
+            if goals:  # Verificar que hay objetivos
+                for goal in goals:
+                    goal.profile_id = profile.id  # Asignar el ID del perfil
+                    db.session.add(goal)
+                db.session.commit()
+                print(f"Objetivos guardados: {len(goals)}")  # Debug
+            else:
+                print("No se generaron objetivos")  # Debug
             
             flash('¡Encuesta completada! Tu perfil financiero ha sido creado.', 'success')
             return redirect(url_for('profile_blueprint.view_profile'))
@@ -62,5 +72,6 @@ def start():
             db.session.rollback()
             flash('Error al procesar la encuesta. Por favor intenta nuevamente.', 'danger')
             print(f"Error: {str(e)}")
+            print(f"Tipo de error: {type(e)}")  # Debug
     
     return render_template('survey/survey.html', form=form)
