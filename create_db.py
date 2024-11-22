@@ -1,16 +1,14 @@
 from app import create_app, db
-from app.models import User, Survey, FinancialProfile, OAuth
+from app.models import User, Survey, FinancialProfile, OAuth, LearningGoal
 
 app = create_app()
 
 with app.app_context():
     try:
-        # Eliminar todas las tablas existentes
-        db.drop_all()
+        db.drop_all()  # Esto eliminará todas las tablas, incluyendo financial_goal
         print("¡Tablas eliminadas exitosamente!")
         
-        # Crear las tablas nuevamente
-        db.create_all()
+        db.create_all()  # Creará las nuevas tablas, incluyendo learning_goal
         print("¡Tablas creadas exitosamente!")
         
         # Verificar las tablas creadas

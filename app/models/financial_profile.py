@@ -31,7 +31,8 @@ class FinancialProfile(db.Model):
     # Relaciones actualizadas
     user = db.relationship('User', back_populates='financial_profiles')
     survey = db.relationship('Survey', back_populates='financial_profile')
-    goals = db.relationship('FinancialGoal', back_populates='profile', lazy=True)
+    # goals = db.relationship('FinancialGoal', back_populates='profile', lazy=True)
+    learning_goals = db.relationship('LearningGoal', back_populates='profile', lazy=True)
 
     def __init__(self, **kwargs):
         super(FinancialProfile, self).__init__(**kwargs)

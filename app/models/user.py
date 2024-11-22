@@ -18,7 +18,8 @@ class User(UserMixin, db.Model):
                                       back_populates='user',
                                       lazy=True,
                                       order_by='desc(FinancialProfile.created_at)')
-    financial_goals = db.relationship('FinancialGoal', back_populates='user', lazy=True)
+    # financial_goals = db.relationship('FinancialGoal', back_populates='user', lazy=True)
+    learning_goals = db.relationship('LearningGoal', back_populates='user', lazy=True)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
