@@ -1,0 +1,193 @@
+<!-- Chat Widget -->
+<div id="chat-widget" class="chat-widget">
+    <!-- Botón de Chat -->
+    <button id="chat-button" class="chat-button">
+        <i class="bi bi-chat-dots"></i>
+    </button>
+
+    <!-- Ventana de Chat -->
+    <div id="chat-window" class="chat-window" style="display: none;">
+        <!-- Encabezado -->
+        <div class="chat-header">
+            <h5 class="mb-0">Asistente Financiero</h5>
+            <button id="close-chat" class="btn-close btn-close-white"></button>
+        </div>
+
+        <!-- Mensajes -->
+        <div id="chat-messages" class="chat-messages">
+            <div class="message bot">
+                ¡Hola! Soy tu asistente financiero. ¿En qué puedo ayudarte?
+            </div>
+        </div>
+
+        <!-- Input -->
+        <div class="chat-input">
+            <input type="text" id="user-message" placeholder="Escribe tu pregunta...">
+            <button id="send-message">
+                <i class="bi bi-send"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos del Chat -->
+<style>
+.chat-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.chat-button {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background-color: var(--bs-primary);
+    color: white;
+    border: none;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.chat-button:hover {
+    transform: scale(1.05);
+}
+
+.chat-window {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 350px;
+    height: 500px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    background: var(--bs-primary);
+    color: white;
+    padding: 15px;
+    border-radius: 12px 12px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 80%;
+}
+
+.message.user {
+    background: #e9ecef;
+    margin-left: auto;
+}
+
+.message.bot {
+    background: #f8f9fa;
+    margin-right: auto;
+}
+
+.chat-input {
+    padding: 15px;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    gap: 10px;
+}
+
+.chat-input input {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 20px;
+    outline: none;
+}
+
+.chat-input button {
+    background: var(--bs-primary);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    cursor: pointer;
+}
+</style>
+
+<!-- JavaScript del Chat -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const chatButton = document.getElementById('chat-button');
+    const chatWindow = document.getElementById('chat-window');
+    const closeChat = document.getElementById('close-chat');
+    const sendMessage = document.getElementById('send-message');
+    const userInput = document.getElementById('user-message');
+    const chatMessages = document.getElementById('chat-messages');
+
+    // Abrir/cerrar chat
+    chatButton.addEventListener('click', () => {
+        chatWindow.style.display = chatWindow.style.display === 'none' ? 'flex' : 'none';
+    });
+
+    closeChat.addEventListener('click', () => {
+        chatWindow.style.display = 'none';
+    });
+
+    // Enviar mensaje
+    function sendMessageHandler() {
+        const message = userInput.value.trim();
+        if (message) {
+            // Agregar mensaje del usuario
+            addMessage(message, 'user');
+            
+            // Llamar a la API
+            fetch('/chat/message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                addMessage(data.response, 'bot');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                addMessage('Lo siento, hubo un error al procesar tu mensaje.', 'bot');
+            });
+
+            userInput.value = '';
+        }
+    }
+
+    // Agregar mensaje al chat
+    function addMessage(text, type) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${type}`;
+        messageDiv.textContent = text;
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Event listeners
+    sendMessage.addEventListener('click', sendMessageHandler);
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendMessageHandler();
+        }
+    });
+});
+</script>

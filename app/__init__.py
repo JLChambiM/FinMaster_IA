@@ -30,6 +30,7 @@ def create_app():
     from app.routes import main, auth, survey, profile
     from app.oauth import blueprint as google_blueprint
     from app.routes import main, auth, survey, profile, goals 
+    from app.routes import chat
     
     # Registrar blueprints
     app.register_blueprint(main.bp)
@@ -38,6 +39,7 @@ def create_app():
     app.register_blueprint(profile.bp)
     app.register_blueprint(google_blueprint, name='google_blueprint')
     app.register_blueprint(goals.bp)
+    app.register_blueprint(chat.bp)
 
     # Filtros personalizados para templates
     @app.template_filter('number_format')
