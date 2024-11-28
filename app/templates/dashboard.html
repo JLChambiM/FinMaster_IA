@@ -1,14 +1,56 @@
 {% extends 'base.html' %}
 {% block content %}
+<style>
+    body {
+        background: linear-gradient(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02)),
+                    url('{{ url_for('static', filename='img/dashboard-bg.jpg') }}');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        min-height: 100vh;
+    }
+
+    .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.1) !important;
+    }
+
+    .icon-circle {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 1.5rem;
+    }
+
+    .metric-value {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .metric-label {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+</style>
+
 <div class="container mt-4">
-    <!-- Encabezado de bienvenida -->
     <div class="row mb-4">
         <div class="col-12">
-            <div class="card bg-primary text-white">
-                <div class="card-body d-flex justify-content-between align-items-center">
+            <div class="card bg-primary text-white bg-opacity-50">
+                <div class="card-body d-flex justify-content-between align-items-center py-4">
                     <div>
                         <h2 class="mb-1">Bienvenido, {{ current_user.email.split('@')[0] }}</h2>
-                        <p class="mb-0">Tu asistente financiero personal</p>
+                        <p class="mb-0 lead">Tu asistente financiero personal</p>
                     </div>
                 </div>
             </div>
@@ -16,58 +58,70 @@
     </div>
 
     {% if profile %}
-    <!-- Resumen del Perfil Financiero -->
     <div class="row mb-4">
         <div class="col-12">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="card-body" style="background-color: rgba(248, 249, 250, 0);">
+                <div class="card-body bg-white bg-opacity-75">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
                         <h5 class="card-title mb-0">Tu Perfil Financiero</h5>
-                        <a href="{{ url_for('profile_blueprint.view_profile') }}" class="btn btn-outline-primary btn-sm">
+                        <a href="{{ url_for('profile_blueprint.view_profile') }}" class="btn btn-outline-primary">
                             Ver perfil completo
                         </a>
                     </div>
-                    
-                    <!-- Métricas Principales -->
-                    <div class="row g-3 mb-4">
+
+                    <div class="row g-4">
                         <div class="col-md-3">
                             <div class="card h-100 border-0 bg-light">
                                 <div class="card-body text-center">
-                                    <h6 class="text-muted mb-2">Salud Financiera</h6>
-                                    <h3 class="mb-0">{{ profile.financial_health_score }}<small class="text-muted">/100</small></h3>
+                                    <div class="icon-circle bg-primary bg-opacity-10 mx-auto mb-3">
+                                        <i class="bi bi-shield-fill-check text-primary"></i> 
+                                    </div>
+                                    <div class="metric-value">{{ profile.financial_health_score }}<small>/100</small></div>
+                                    <div class="metric-label">Salud Financiera</div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-3">
                             <div class="card h-100 border-0 bg-light">
                                 <div class="card-body text-center">
-                                    <h6 class="text-muted mb-2">Ahorro Mensual</h6>
-                                    <h3 class="mb-0">{{ "%.1f"|format(profile.savings_ratio) }}<small class="text-muted">%</small></h3>
+                                    <div class="icon-circle bg-success bg-opacity-10 mx-auto mb-3">
+                                        <i class="bi bi-piggy-bank text-success"></i>
+                                    </div>
+                                    <div class="metric-value">{{ "%.1f"|format(profile.savings_ratio) }}<small>%</small></div>
+                                    <div class="metric-label">Ahorro Mensual</div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-3">
                             <div class="card h-100 border-0 bg-light">
                                 <div class="card-body text-center">
-                                    <h6 class="text-muted mb-2">Fondo Emergencia</h6>
-                                    <h3 class="mb-0">{{ "%.1f"|format(profile.emergency_fund_months) }}<small class="text-muted">meses</small></h3>
+                                    <div class="icon-circle bg-warning bg-opacity-10 mx-auto mb-3">
+                                        <i class="bi bi-shield-check text-warning"></i>
+                                    </div>
+                                    <div class="metric-value">{{ "%.1f"|format(profile.emergency_fund_months) }}<small>meses</small></div>
+                                    <div class="metric-label">Fondo Emergencia</div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-3">
                             <div class="card h-100 border-0 bg-light">
                                 <div class="card-body text-center">
-                                    <h6 class="text-muted mb-2">Perfil Inversor</h6>
-                                    <h3 class="mb-0 text-capitalize">{{ profile.risk_profile }}</h3>
+                                    <div class="icon-circle bg-info bg-opacity-10 mx-auto mb-3">
+                                        <i class="bi bi-graph-up-arrow text-info"></i>
+                                    </div>
+                                    <div class="metric-value text-capitalize">{{ profile.risk_profile }}</div>
+                                    <div class="metric-label">Perfil Inversor</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Próxima Acción -->
                     {% if profile.get_action_items() %}
-                    <div class="alert alert-info mb-0">
-                        <h6 class="alert-heading">Próxima acción recomendada:</h6>
+                    <div class="alert alert-info mt-4 mb-0">
+                        <h6 class="alert-heading mb-1">Próxima acción recomendada:</h6>
                         <p class="mb-0">{{ profile.get_action_items()[0] }}</p>
                     </div>
                     {% endif %}
@@ -77,25 +131,24 @@
     </div>
     {% endif %}
 
-    <!-- Tarjetas de Estado/Acciones -->
     <div class="row mb-4">
         <div class="col-md-4 mb-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
+            <div class="card border-0 shadow-sm h-100 " style="background-color: rgba(248, 249, 250, 0.8);">
+                <div class="card-body bg-white bg-opacity-50">
                     <div class="d-flex align-items-center mb-3">
-                        <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
-                            <i class="bi bi-clipboard-data"></i>
+                        <div class="icon-circle bg-primary bg-opacity-10 me-3">
+                            <i class="bi bi-clipboard-data text-primary"></i>
                         </div>
                         <h5 class="card-title mb-0">Estado Actual</h5>
                     </div>
-                    
+
                     {% if not profile %}
-                    <p>Completa tu evaluación inicial para empezar tu viaje financiero</p>
+                    <p class="card-text mb-4">Completa tu evaluación inicial para empezar tu viaje financiero</p>
                     <a href="{{ url_for('survey_blueprint.purpose') }}" class="btn btn-outline-primary w-100">
                         Iniciar Evaluación
                     </a>
                     {% else %}
-                    <p>Ya has completado tu evaluación inicial</p>
+                    <p class="card-text mb-4">Ya has completado tu evaluación inicial</p>
                     <a href="{{ url_for('profile_blueprint.view_profile') }}" class="btn btn-outline-primary w-100">
                         Ver Mi Perfil
                     </a>
@@ -104,56 +157,49 @@
             </div>
         </div>
 
-            <!-- Sección de Objetivos de Aprendizaje -->
         <div class="col-md-4 mb-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
+            <div class="card border-0 shadow-sm h-100" style="background-color: rgba(248, 249, 250, 0.8);">
+                <div class="card-body bg-white bg-opacity-50">
                     <div class="d-flex align-items-center mb-3">
-                        <div class="bg-warning bg-opacity-10 p-3 rounded-circle me-3">
-                            <i class="bi bi-book"></i>
+                        <div class="icon-circle bg-warning bg-opacity-10 me-3">
+                            <i class="bi bi-book text-warning"></i>
                         </div>
                         <h5 class="card-title mb-0">Objetivos de Aprendizaje</h5>
                     </div>
-                
+
                     {% if profile and profile.learning_goals %}
                         <div class="objectives-list">
                             {% set pending_goals = profile.learning_goals|selectattr('status', 'equalto', 'pending')|list %}
                             {% if pending_goals %}
                                 {% for goal in pending_goals[:2] %}
-                                    <div class="objective-item mb-3">
-                                        <div class="d-flex justify-content-between align-items-center mb-1">
-                                            <small class="text-muted">{{ goal.title }}</small>
-                                            <span class="badge bg-{{ {
-                                                'high': 'danger',
-                                                'medium': 'warning',
-                                                'low': 'info'
-                                            }[goal.importance] }} badge-sm">
-                                                {{ goal.importance|title }}
-                                            </span>
-                                        </div>
-                                        <small class="text-muted d-block">{{ goal.category_info.name }}</small>
+                                <div class="objective-item mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <small class="text-muted">{{ goal.title }}</small>
+                                        <span class="badge bg-{{ {
+                                            'high': 'danger',
+                                            'medium': 'warning',
+                                            'low': 'info'
+                                        }[goal.importance] }}">{{ goal.importance|title }}</span>
                                     </div>
+                                    <small class="text-muted d-block">{{ goal.category_info.name }}</small>
+                                </div>
                                 {% endfor %}
                                 
                                 {% if pending_goals|length > 2 %}
-                                    <small class="text-muted">
-                                        Y {{ pending_goals|length - 2 }} objetivos más...
-                                    </small>
+                                <small class="text-muted d-block mb-3">Y {{ pending_goals|length - 2 }} objetivos más...</small>
                                 {% endif %}
                             {% else %}
-                                <p class="text-muted mb-3">No hay objetivos pendientes actualmente.</p>
+                                <p class="card-text mb-4">No hay objetivos pendientes actualmente.</p>
                             {% endif %}
-                                
-                            <a href="{{ url_for('goals_blueprint.view_goals') }}" 
-                               class="btn btn-outline-warning w-100">
+                            
+                            <a href="{{ url_for('goals_blueprint.view_goals') }}" class="btn btn-outline-warning w-100">
                                 Ver ruta de aprendizaje
                             </a>
                         </div>
                     {% else %}
-                        <p class="text-muted mb-3">Define tus objetivos de aprendizaje financiero</p>
+                        <p class="card-text mb-4">Define tus objetivos de aprendizaje financiero</p>
                         {% if not profile %}
-                            <a href="{{ url_for('survey_blueprint.purpose') }}" 
-                               class="btn btn-outline-warning w-100">
+                            <a href="{{ url_for('survey_blueprint.purpose') }}" class="btn btn-outline-warning w-100">
                                 Iniciar Evaluación
                             </a>
                         {% endif %}
@@ -163,15 +209,15 @@
         </div>
 
         <div class="col-md-4 mb-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
+            <div class="card border-0 shadow-sm h-100" style="background-color: rgba(248, 249, 250, 0.8);">
+                <div class="card-body bg-white bg-opacity-50">
                     <div class="d-flex align-items-center mb-3">
-                        <div class="bg-success bg-opacity-10 p-3 rounded-circle me-3">
-                            <i class="bi bi-book"></i>
+                        <div class="icon-circle bg-success bg-opacity-10 me-3">
+                            <i class="bi bi-journal-text text-success"></i>
                         </div>
                         <h5 class="card-title mb-0">Recursos</h5>
                     </div>
-                    <p>Explora contenido educativo personalizado</p>
+                    <p class="card-text mb-4">Explora contenido educativo personalizado</p>
                     <span class="badge bg-secondary">Próximamente</span>
                 </div>
             </div>
